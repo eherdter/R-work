@@ -51,7 +51,6 @@ age_11_basic <- ggplot(Age_2011, aes(x=Age))+
         plot.title=element_text(size=14))+
   annotate("text", x=10, y=.35, label="2011", size=10, family="Times New Roman")
 
-### added comment
 
 age_12_basic <- ggplot(Age_2012, aes(x=Age))+ 
   geom_histogram(aes(y=(..count..)/sum(..count..)), binwidth=1, origin=-.5, fill="white", color="black")+    # plotting in percent frequency

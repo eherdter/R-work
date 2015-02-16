@@ -1,8 +1,8 @@
 # My combined fit for all data plus fits for other data sets
 
-setwd("~/Desktop/R_workspace/Age Length")
+setwd("~/Desktop/Github Repo/r-work/Age Length")
 mydata <- read.csv("Raw_Age_length.csv", header=TRUE,sep=",")
-setwd("~/Desktop/R_workspace")
+setwd("~/Desktop/Github Repo/r-work")
 inc_data <- read.csv("BC_12_16.csv", header=TRUE, sep=",")
 
 x = data.frame(mydata$Fractional.Age)  #make age matrix

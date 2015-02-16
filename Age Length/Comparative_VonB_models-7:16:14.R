@@ -159,7 +159,7 @@ colnames(MP97) <- c("Label", "x", "y")
 #colnames(observed) <- c("Label", "x", "y")
 
 
-df_comparative <- data.frame(rbind(fitted,fitted_before, fitted_after, Wilson, P01, SS94, NM82, MP97 ))
+df_comparative <- data.frame(rbind(fitted,fitted_before, Wilson, P01, SS94, NM82, MP97 ))
 
 library(ggplot2)
 

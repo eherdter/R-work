@@ -167,6 +167,8 @@ SLA6 <- rcor.test(df_MSLA_6, method= "pearson")
 #http://stackoverflow.com/questions/5453336/plot-correlation-matrix-into-a-graph
 #http://stackoverflow.com/questions/12774210/how-do-you-specifically-order-ggplot2-x-axis-instead-of-alphabetical-order
 #http://stackoverflow.com/questions/2805885/margin-adjustments-when-using-ggplots-geom-tile
+#https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/
+
 
 # U winds
 UW3df<- as.data.frame(UW3$cor.mat) 
@@ -178,8 +180,26 @@ cormatU<-cbind(UW3df[2:18,1],UW4df[2:18,1],UW5df[2:18,1],UW6df[2:18,1])  #combin
 colnames(cormatU) <- c("3", "4", "5", "6")
 row.names(cormatU) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
-require(lattice)
-UWindplot<-levelplot(cormatU,scales=list(x=list(rot=90)), aspect="fill", xlab="UWind", ylab=NULL, mai=c(1,1,1,5), par.settings=list(layout.heights=list(top.padding=-2)))
+library(ggplot2)
+library(reshape)
+
+cormatU.m <- melt(cormatU)
+cormatU.m$X1<- factor(cormatU.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
+cormatU.m$X2 <- factor(cormatU.m$X2, levels=c("3", "4", "5", "6"))
+
+
+Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+
+  geom_tile()+
+  scale_x_discrete(expand=c(0,0))+
+  scale_y_discrete(expand=c(0,0))+
+  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  xlab("U winds")+
+  theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(family="Times New Roman", colour="black"),
+        axis.text.x=element_text(family= "Times New Roman", colour="black", angle=90, hjust=1), 
+        axis.text.y=element_text(family= "Times New Roman", colour="black"),
+        legend.text=element_text(family= "Times New Roman"))
 
 
 # V Winds
@@ -192,8 +212,25 @@ VW6df <-as.data.frame(VW6$cor.mat)
 cormatV<-cbind(VW3df[2:18,1],VW4df[2:18,1],VW5df[2:18,1],VW6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
 colnames(cormatV) <- c("3", "4", "5", "6")
 row.names(cormatV) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
-require(lattice)
-VWindplot<-levelplot(cormatV, scales=list(x=list(rot=90)), aspect="fill", xlab="VWind", ylab=NULL, par.settings=list(layout.heights=list(top.padding=-2)))
+
+cormatV.m <- melt(cormatV)
+cormatV.m$X1<- factor(cormatV.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
+cormatV.m$X2 <- factor(cormatV.m$X2, levels=c("3", "4", "5", "6"))
+
+
+Vcor<-ggplot(cormatV.m, aes(X1,X2, fill=value))+
+  geom_tile()+
+  scale_x_discrete(expand=c(0,0))+
+  scale_y_discrete(expand=c(0,0))+
+  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  xlab("V winds")+
+  theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(family="Times New Roman", colour="black"),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=90, hjust=1), 
+        axis.text.y=element_text(family= "Times New Roman", colour="black"),
+        legend.text=element_text(family= "Times New Roman"))
+
 
 
 ## DIS
@@ -207,8 +244,25 @@ cormatD<-cbind(Dis3df[2:18,1],Dis4df[2:18,1],Dis5df[2:18,1],Dis6df[2:18,1])  #co
 colnames(cormatD) <- c("3", "4", "5", "6")
 row.names(cormatD) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
-require(lattice)
-RDplot<-levelplot(cormatD, scales=list(x=list(rot=90)), aspect="fill", xlab="RD", ylab=NULL, par.settings=list(layout.heights=list(top.padding=-2)))
+cormatD.m <- melt(cormatD)
+cormatD.m$X1<- factor(cormatD.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
+cormatD.m$X2 <- factor(cormatD.m$X2, levels=c("3", "4", "5", "6"))
+
+
+Dcor<-ggplot(cormatD.m, aes(X1,X2, fill=value))+
+  geom_tile()+
+  scale_x_discrete(expand=c(0,0))+
+  scale_y_discrete(expand=c(0,0))+
+  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  xlab("River Discharge")+
+  theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(family="Times New Roman", colour="black"),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=90, hjust=1), 
+        axis.text.y=element_text(family= "Times New Roman", colour="black"),
+        legend.text=element_text(family= "Times New Roman"))
+
+
 
 
 ## SLA
@@ -221,28 +275,24 @@ SLA6df <-as.data.frame(SLA6$cor.mat)
 cormatSLA<-cbind(SLA3df[2:18,1],SLA4df[2:18,1],SLA5df[2:18,1],SLA6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enSLAiro corr
 colnames(cormatSLA) <- c("3", "4", "5", "6")
 row.names(cormatSLA) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
-require(lattice)
-SLAplot<-levelplot(cormatSLA, scales=list(x=list(rot=90)), aspect="fill", xlab="SLA", ylab=NULL, par.settings=list(layout.heights=list(top.padding=-2)), par.xlab.text=list(fontfamily="Gill Sans"),
-                   par.ylab.text=list(fontfamily="Gill Sans"),
-                   par.main.text=list(fontfamily="Gill Sans"),
-                   par.sub.text=list(fontfamily="Gill Sans"))  #using levelplot because this is the mo
-
-
-
-library(ggplot2)
-library(reshape)
 
 cormatSLA.m <- melt(cormatSLA)
 cormatSLA.m$X1<- factor(cormatSLA.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
 cormatSLA.m$X2 <- factor(cormatSLA.m$X2, levels=c("3", "4", "5", "6"))
 
 
-ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
-    geom_tile()+
-    scale_x_discrete(expand=c(0,0))+
-    scale_y_discrete(expand=c(0,0))+
-    scale_fill_gradient2(low="blue", high="yellow")+
-    theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())
+SLAcor<- ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
+  geom_tile()+
+  scale_x_discrete(expand=c(0,0))+
+  scale_y_discrete(expand=c(0,0))+
+  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  xlab("SLA")+
+  theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(family="Times New Roman", colour="black"),
+        axis.text.x=element_text(family= "Times New Roman", colour="black", angle=90, hjust=1), 
+        axis.text.y=element_text(family= "Times New Roman", colour="black"),
+        legend.text=element_text(family= "Times New Roman"))
 
 
 
@@ -251,7 +301,7 @@ ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
 
 library(gridExtra)
 tiff(file="Correlation Plot.tiff", width=2175, height= 1449, units="px", res=300)
-grid.arrange(UWindplot,VWindplot,RDplot,SLAplot, ncol=2)
+grid.arrange(Ucor,Vcor,Dcor,SLAcor, ncol=2)
 dev.off()
 
 

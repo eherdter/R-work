@@ -164,57 +164,94 @@ SLA6 <- rcor.test(df_MSLA_6, method= "pearson")
 
 
 ## Using manually made correlation matrices from above plots to make a correlation plot
+#http://stackoverflow.com/questions/5453336/plot-correlation-matrix-into-a-graph
+#http://stackoverflow.com/questions/12774210/how-do-you-specifically-order-ggplot2-x-axis-instead-of-alphabetical-order
+#http://stackoverflow.com/questions/2805885/margin-adjustments-when-using-ggplots-geom-tile
 
-UW3df<- as.data.frame(UW3$cor.mat)
+# U winds
+UW3df<- as.data.frame(UW3$cor.mat) 
 UW4df<- as.data.frame(UW4$cor.mat)
 UW5df<- as.data.frame(UW5$cor.mat)
 UW6df <-as.data.frame(UW6$cor.mat)
 
+cormatU<-cbind(UW3df[2:18,1],UW4df[2:18,1],UW5df[2:18,1],UW6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
+colnames(cormatU) <- c("3", "4", "5", "6")
+row.names(cormatU) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
-cbind(UW3df[2:19,1],UW4df[2:19,1],UW5df[2:19,1],UW6df[2:19,1])  #combined correlation coefficients for U Winds for 3-6 increments
+require(lattice)
+UWindplot<-levelplot(cormatU,scales=list(x=list(rot=90)), aspect="fill", xlab="UWind", ylab=NULL, mai=c(1,1,1,5), par.settings=list(layout.heights=list(top.padding=-2)))
+
+
+# V Winds
+VW3df<- as.data.frame(VW3$cor.mat) 
+VW4df<- as.data.frame(VW4$cor.mat)
+VW5df<- as.data.frame(VW5$cor.mat)
+VW6df <-as.data.frame(VW6$cor.mat)
+
+
+cormatV<-cbind(VW3df[2:18,1],VW4df[2:18,1],VW5df[2:18,1],VW6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
+colnames(cormatV) <- c("3", "4", "5", "6")
+row.names(cormatV) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
+require(lattice)
+VWindplot<-levelplot(cormatV, scales=list(x=list(rot=90)), aspect="fill", xlab="VWind", ylab=NULL, par.settings=list(layout.heights=list(top.padding=-2)))
+
+
+## DIS
+Dis3df<- as.data.frame(Dis3$cor.mat) 
+Dis4df<- as.data.frame(Dis4$cor.mat)
+Dis5df<- as.data.frame(Dis5$cor.mat)
+Dis6df <-as.data.frame(Dis6$cor.mat)
+
+
+cormatD<-cbind(Dis3df[2:18,1],Dis4df[2:18,1],Dis5df[2:18,1],Dis6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enDisiro corr
+colnames(cormatD) <- c("3", "4", "5", "6")
+row.names(cormatD) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
+
+require(lattice)
+RDplot<-levelplot(cormatD, scales=list(x=list(rot=90)), aspect="fill", xlab="RD", ylab=NULL, par.settings=list(layout.heights=list(top.padding=-2)))
+
+
+## SLA
+SLA3df<- as.data.frame(SLA3$cor.mat) 
+SLA4df<- as.data.frame(SLA4$cor.mat)
+SLA5df<- as.data.frame(SLA5$cor.mat)
+SLA6df <-as.data.frame(SLA6$cor.mat)
+
+
+cormatSLA<-cbind(SLA3df[2:18,1],SLA4df[2:18,1],SLA5df[2:18,1],SLA6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enSLAiro corr
+colnames(cormatSLA) <- c("3", "4", "5", "6")
+row.names(cormatSLA) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
+require(lattice)
+SLAplot<-levelplot(cormatSLA, scales=list(x=list(rot=90)), aspect="fill", xlab="SLA", ylab=NULL, par.settings=list(layout.heights=list(top.padding=-2)), par.xlab.text=list(fontfamily="Gill Sans"),
+                   par.ylab.text=list(fontfamily="Gill Sans"),
+                   par.main.text=list(fontfamily="Gill Sans"),
+                   par.sub.text=list(fontfamily="Gill Sans"))  #using levelplot because this is the mo
+
+
+
+library(ggplot2)
+library(reshape)
+
+cormatSLA.m <- melt(cormatSLA)
+cormatSLA.m$X1<- factor(cormatSLA.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
+cormatSLA.m$X2 <- factor(cormatSLA.m$X2, levels=c("3", "4", "5", "6"))
+
+
+ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
+    geom_tile()+
+    scale_x_discrete(expand=c(0,0))+
+    scale_y_discrete(expand=c(0,0))+
+    scale_fill_gradient2(low="blue", high="yellow")+
+    theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())
 
 
 
 
-# ## WEST FLORIDA SHELF
-# 
-# idxB<- data_wk$nConvertedLong >= -87 ## for samples on WEST FLORIDA SHELF 
-# 
-# 
-# data_wk_WFS <- data_wk[idxB,]
-# data_wk_WFS <- data_wk_WFS[complete.cases(data_wk_WFS$nConvertedLong),]
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# ## calculating normalized data and trying to plot
-# # MeanIW3 <- ddply(data_wk_3, .(Year.of.Increment.Formation), summarise, N=length(Increment.Width), three.mean=mean(Increment.Width))
-# # MeanIW3$NormIW <- MeanIW3$three.mean- mean(MeanIW3$three.mean)
-# # 
-# # library(dplR)
-# # MeanAprilU = ddply(df_WindU_3, .(time), summarise, N=length(April.U), AprilU.mean= tbrm(April.U, C=6))
-# # MeanAprilU$Norm <- MeanAprilU$AprilU.mean- tbrm(MeanAprilU$AprilU.mean, C=6)
-# # 
-# # 
-# # 
-# # library(ggplot2)
-# # plotA <- ggplot()+ geom_line(data=MeanIW3, aes(x=MeanIW3$Year.of.Increment.Formation, y=MeanIW3$NormIW, colour="value"))+  #gives each of these a different color
-# #   geom_line(data=MeanAprilU, aes(x=MeanAprilU$time, y= MeanAprilU$Norm, colour="xxxstd")) +
-# #   scale_colour_manual(values=c("#999999", "#000000"))+ #specifies color for each
-# #   #ylab("Time")+
-# #   scale_x_continuous(limits=c(2004, 2012), breaks=seq(2004, 2012,1))+
-# #   theme(panel.grid.minor=element_blank(),panel.grid.major=element_blank(), 
-# #         panel.background=element_rect(colour="black", fill="white"),
-# #         legend.key=element_blank(), 
-# #         axis.title.x =element_text(colour="black"),
-# #         axis.text.x = element_text(colour="black"),
-# #         axis.title.y =element_text(colour="black"),
-# #         axis.text.y = element_text(colour="black"),
-# #         legend.position="none", # no legend
-# #         axis.text.x=element_text(colour="black"), #changing  colour of x axis
-# #         axis.text.y=element_text(colour="black"))#changing colour of y acis
+
+
+library(gridExtra)
+tiff(file="Correlation Plot.tiff", width=2175, height= 1449, units="px", res=300)
+grid.arrange(UWindplot,VWindplot,RDplot,SLAplot, ncol=2)
+dev.off()
+
+

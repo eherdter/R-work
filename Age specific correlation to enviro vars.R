@@ -162,45 +162,59 @@ SLA6 <- rcor.test(df_MSLA_6, method= "pearson")
 
 
 
-## WEST FLORIDA SHELF
 
-idxB<- data_wk$nConvertedLong >= -87 ## for samples on WEST FLORIDA SHELF 
+## Using manually made correlation matrices from above plots to make a correlation plot
 
-
-data_wk_WFS <- data_wk[idxB,]
-data_wk_WFS <- data_wk_WFS[complete.cases(data_wk_WFS$nConvertedLong),]
-
-
+UW3df<- as.data.frame(UW3$cor.mat)
+UW4df<- as.data.frame(UW4$cor.mat)
+UW5df<- as.data.frame(UW5$cor.mat)
+UW6df <-as.data.frame(UW6$cor.mat)
 
 
-
+cbind(UW3df[2:19,1],UW4df[2:19,1],UW5df[2:19,1],UW6df[2:19,1])  #combined correlation coefficients for U Winds for 3-6 increments
 
 
 
 
-## calculating normalized data and trying to plot
-# MeanIW3 <- ddply(data_wk_3, .(Year.of.Increment.Formation), summarise, N=length(Increment.Width), three.mean=mean(Increment.Width))
-# MeanIW3$NormIW <- MeanIW3$three.mean- mean(MeanIW3$three.mean)
+# ## WEST FLORIDA SHELF
 # 
-# library(dplR)
-# MeanAprilU = ddply(df_WindU_3, .(time), summarise, N=length(April.U), AprilU.mean= tbrm(April.U, C=6))
-# MeanAprilU$Norm <- MeanAprilU$AprilU.mean- tbrm(MeanAprilU$AprilU.mean, C=6)
+# idxB<- data_wk$nConvertedLong >= -87 ## for samples on WEST FLORIDA SHELF 
+# 
+# 
+# data_wk_WFS <- data_wk[idxB,]
+# data_wk_WFS <- data_wk_WFS[complete.cases(data_wk_WFS$nConvertedLong),]
 # 
 # 
 # 
-# library(ggplot2)
-# plotA <- ggplot()+ geom_line(data=MeanIW3, aes(x=MeanIW3$Year.of.Increment.Formation, y=MeanIW3$NormIW, colour="value"))+  #gives each of these a different color
-#   geom_line(data=MeanAprilU, aes(x=MeanAprilU$time, y= MeanAprilU$Norm, colour="xxxstd")) +
-#   scale_colour_manual(values=c("#999999", "#000000"))+ #specifies color for each
-#   #ylab("Time")+
-#   scale_x_continuous(limits=c(2004, 2012), breaks=seq(2004, 2012,1))+
-#   theme(panel.grid.minor=element_blank(),panel.grid.major=element_blank(), 
-#         panel.background=element_rect(colour="black", fill="white"),
-#         legend.key=element_blank(), 
-#         axis.title.x =element_text(colour="black"),
-#         axis.text.x = element_text(colour="black"),
-#         axis.title.y =element_text(colour="black"),
-#         axis.text.y = element_text(colour="black"),
-#         legend.position="none", # no legend
-#         axis.text.x=element_text(colour="black"), #changing  colour of x axis
-#         axis.text.y=element_text(colour="black"))#changing colour of y acis
+# 
+# 
+# 
+# 
+# 
+# 
+# ## calculating normalized data and trying to plot
+# # MeanIW3 <- ddply(data_wk_3, .(Year.of.Increment.Formation), summarise, N=length(Increment.Width), three.mean=mean(Increment.Width))
+# # MeanIW3$NormIW <- MeanIW3$three.mean- mean(MeanIW3$three.mean)
+# # 
+# # library(dplR)
+# # MeanAprilU = ddply(df_WindU_3, .(time), summarise, N=length(April.U), AprilU.mean= tbrm(April.U, C=6))
+# # MeanAprilU$Norm <- MeanAprilU$AprilU.mean- tbrm(MeanAprilU$AprilU.mean, C=6)
+# # 
+# # 
+# # 
+# # library(ggplot2)
+# # plotA <- ggplot()+ geom_line(data=MeanIW3, aes(x=MeanIW3$Year.of.Increment.Formation, y=MeanIW3$NormIW, colour="value"))+  #gives each of these a different color
+# #   geom_line(data=MeanAprilU, aes(x=MeanAprilU$time, y= MeanAprilU$Norm, colour="xxxstd")) +
+# #   scale_colour_manual(values=c("#999999", "#000000"))+ #specifies color for each
+# #   #ylab("Time")+
+# #   scale_x_continuous(limits=c(2004, 2012), breaks=seq(2004, 2012,1))+
+# #   theme(panel.grid.minor=element_blank(),panel.grid.major=element_blank(), 
+# #         panel.background=element_rect(colour="black", fill="white"),
+# #         legend.key=element_blank(), 
+# #         axis.title.x =element_text(colour="black"),
+# #         axis.text.x = element_text(colour="black"),
+# #         axis.title.y =element_text(colour="black"),
+# #         axis.text.y = element_text(colour="black"),
+# #         legend.position="none", # no legend
+# #         axis.text.x=element_text(colour="black"), #changing  colour of x axis
+# #         axis.text.y=element_text(colour="black"))#changing colour of y acis

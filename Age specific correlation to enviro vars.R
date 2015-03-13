@@ -190,7 +190,7 @@ cormatU.m$X2 <- factor(cormatU.m$X2, levels=c("3", "4", "5", "6"))
 
 Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+
   geom_tile()+
-  scale_x_discrete(expand=c(0,0))+
+  scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+ #only display those lables on x axis
   scale_y_discrete(expand=c(0,0))+
   scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
   xlab("U winds")+
@@ -199,7 +199,7 @@ Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+
         axis.title.x = element_text(family="Times New Roman", colour="black"),
         axis.text.x=element_text(family= "Times New Roman", colour="black", angle=90, hjust=1), 
         axis.text.y=element_text(family= "Times New Roman", colour="black"),
-        legend.text=element_text(family= "Times New Roman"))
+        legend.position="none") #remove legend from all plots except one
 
 
 # V Winds

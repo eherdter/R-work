@@ -191,14 +191,15 @@ cormatU.m$X2 <- factor(cormatU.m$X2, levels=c("3", "4", "5", "6"))
 Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+ #only display those lables on x axis
-  scale_y_discrete(expand=c(0,0))+
+  scale_y_discrete(expand=c(0,0))+  ## expand fills the y aixs completely to the outermost portion of the plot. So it effectively stretches it as tall as it can go
   scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
   xlab("U winds")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black"),
-        axis.text.x=element_text(family= "Times New Roman", colour="black", angle=90, hjust=1), 
-        axis.text.y=element_text(family= "Times New Roman", colour="black"),
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=14), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        legend.text=element_text(family= "Times New Roman"),
         legend.position="none") #remove legend from all plots except one
 
 
@@ -220,16 +221,17 @@ cormatV.m$X2 <- factor(cormatV.m$X2, levels=c("3", "4", "5", "6"))
 
 Vcor<-ggplot(cormatV.m, aes(X1,X2, fill=value))+
   geom_tile()+
-  scale_x_discrete(expand=c(0,0))+
+  scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
-  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  scale_fill_continuous(name="Coefficients", limits=c(-0.75,0.75), breaks=seq(-0.60,0.60,0.3), low="white", high="red")+
   xlab("V winds")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black"),
-        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=90, hjust=1), 
-        axis.text.y=element_text(family= "Times New Roman", colour="black"),
-        legend.text=element_text(family= "Times New Roman"))
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=14), 
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        legend.text=element_text(family= "Times New Roman", size=14),
+        legend.title=element_text(family="Times New Roman", size=14, vjust=1))
 
 
 
@@ -251,16 +253,17 @@ cormatD.m$X2 <- factor(cormatD.m$X2, levels=c("3", "4", "5", "6"))
 
 Dcor<-ggplot(cormatD.m, aes(X1,X2, fill=value))+
   geom_tile()+
-  scale_x_discrete(expand=c(0,0))+
+  scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
   scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
   xlab("River Discharge")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black"),
-        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=90, hjust=1), 
-        axis.text.y=element_text(family= "Times New Roman", colour="black"),
-        legend.text=element_text(family= "Times New Roman"))
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=14), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        legend.text=element_text(family= "Times New Roman"),
+        legend.position="none")  # only keep the legend for the V winds so we only need one legend on the plot
 
 
 
@@ -283,25 +286,42 @@ cormatSLA.m$X2 <- factor(cormatSLA.m$X2, levels=c("3", "4", "5", "6"))
 
 SLAcor<- ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
   geom_tile()+
-  scale_x_discrete(expand=c(0,0))+
+  scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
   scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
   xlab("SLA")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black"),
-        axis.text.x=element_text(family= "Times New Roman", colour="black", angle=90, hjust=1), 
-        axis.text.y=element_text(family= "Times New Roman", colour="black"),
-        legend.text=element_text(family= "Times New Roman"))
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1,size=14), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        legend.text=element_text(family= "Times New Roman"),
+        legend.position="none")
 
+#https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
+# How to share a legend between all 4 ggplots... I edited the code where you specify which plot to take the legend from. Since I already specified the legend title in plot 2 I decided to chose this one as the plot to extract legend from. 
+library(ggplot2)
+library(gridExtra)
 
+grid_arrange_shared_legend <- function(...) {
+  plots <- list(...)
+  g <- ggplotGrob(plots[[2]] + theme(legend.position="top", legend.text=element_text(size=12,angle=60), legend.title=element_text(size=16, hjust=-3)))$grobs
+  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+  lheight <- sum(legend$height)
+  grid.arrange(
+    do.call(arrangeGrob, lapply(plots, function(x)
+      x + theme(legend.position="none"))),
+    legend,
+    ncol = 1,
+    heights = unit.c(unit(1, "npc") - lheight, lheight))
+}
 
 
 
 
 library(gridExtra)
-tiff(file="Correlation Plot.tiff", width=2175, height= 1449, units="px", res=300)
-grid.arrange(Ucor,Vcor,Dcor,SLAcor, ncol=2)
+tiff(file="Correlation Plot.tiff", width=2159, height= 1800, units="px", res=300, pointsize=10)
+grid_arrange_shared_legend(Ucor,Vcor,Dcor,SLAcor, ncol=2)
 dev.off()
 
 

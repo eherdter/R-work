@@ -172,11 +172,24 @@ SLA6 <- rcor.test(df_MSLA_6, method= "pearson")
 
 # U winds
 UW3df<- as.data.frame(UW3$cor.mat) 
-UW4df<- as.data.frame(UW4$cor.mat)
-UW5df<- as.data.frame(UW5$cor.mat)
-UW6df <-as.data.frame(UW6$cor.mat)
+corrcof3U<-UW3df[2:18,1] #selecting the first column
+corrcof3U[c(1,2,3,9)] <- "NA" #removing non significant corr coeffs
 
-cormatU<-cbind(UW3df[2:18,1],UW4df[2:18,1],UW5df[2:18,1],UW6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
+UW4df<- as.data.frame(UW4$cor.mat)
+corrcof4U<-UW4df[2:18,1] #selecting the first column
+corrcof4U[c(1,4,6,7,9,14,15)] <- "NA" #removing non significant corr coeffs
+
+
+UW5df<- as.data.frame(UW5$cor.mat)
+corrcof5U<-UW5df[2:18,1] #selecting the first column
+corrcof5U[c(4,6,7,9,14,15)] <- "NA" #removing non significant corr coeffs
+
+
+UW6df <-as.data.frame(UW6$cor.mat)
+corrcof6U<-UW6df[2:18,1]
+corrcof6U[c(1,6,7,9,10,12,13,14,15)] <- "NA" 
+
+cormatU<-cbind(corrcof3U, corrcof4U, corrcof5U, corrcof6U)  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
 colnames(cormatU) <- c("3", "4", "5", "6")
 row.names(cormatU) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
@@ -192,13 +205,13 @@ Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+ #only display those lables on x axis
   scale_y_discrete(expand=c(0,0))+  ## expand fills the y aixs completely to the outermost portion of the plot. So it effectively stretches it as tall as it can go
-  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  scale_fill_gradient2(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="green", high="red", na.value="transparent")+
   xlab("U winds")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
-        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=14), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
-        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=18),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=18), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=18),
         legend.text=element_text(family= "Times New Roman"),
         legend.position="none") #remove legend from all plots except one
 
@@ -223,13 +236,13 @@ Vcor<-ggplot(cormatV.m, aes(X1,X2, fill=value))+
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
-  scale_fill_continuous(name="Coefficients", limits=c(-0.75,0.75), breaks=seq(-0.60,0.60,0.3), low="white", high="red")+
+  scale_fill_continuous(name="Correlation\nCoefficients", limits=c(-0.75,0.75), breaks=seq(-0.60,0.60,0.3), low="white", high="red")+
   xlab("V winds")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
-        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=14), 
-        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=18),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=18), 
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=18),
         legend.text=element_text(family= "Times New Roman", size=14),
         legend.title=element_text(family="Times New Roman", size=14, vjust=1))
 
@@ -259,9 +272,9 @@ Dcor<-ggplot(cormatD.m, aes(X1,X2, fill=value))+
   xlab("River Discharge")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
-        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=14), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
-        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=18),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1, size=18), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=18),
         legend.text=element_text(family= "Times New Roman"),
         legend.position="none")  # only keep the legend for the V winds so we only need one legend on the plot
 
@@ -292,9 +305,9 @@ SLAcor<- ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
   xlab("SLA")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
-        axis.title.x = element_text(family="Times New Roman", colour="black", size=14),
-        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1,size=14), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
-        axis.text.y=element_text(family= "Times New Roman", colour="black", size=14),
+        axis.title.x = element_text(family="Times New Roman", colour="black", size=18),
+        axis.text.x=element_text(family= "Times New Roman", colour="black",  angle=45, vjust=1, hjust=1,size=18), #use vjust to move axis labels perfectly on tick marks (have to use verticle just because the labels are flipped on their side)
+        axis.text.y=element_text(family= "Times New Roman", colour="black", size=18),
         legend.text=element_text(family= "Times New Roman"),
         legend.position="none")
 
@@ -305,7 +318,7 @@ library(gridExtra)
 
 grid_arrange_shared_legend <- function(...) {
   plots <- list(...)
-  g <- ggplotGrob(plots[[2]] + theme(legend.position="top", legend.text=element_text(size=12,angle=60), legend.title=element_text(size=16, hjust=-3)))$grobs
+  g <- ggplotGrob(plots[[2]] + theme(legend.position="top", legend.text=element_text(size=14,angle=60), legend.title=element_text(size=16, hjust=-3)))$grobs
   legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
   lheight <- sum(legend$height)
   grid.arrange(
@@ -320,7 +333,7 @@ grid_arrange_shared_legend <- function(...) {
 
 
 library(gridExtra)
-tiff(file="Correlation Plot.tiff", width=2159, height= 1800, units="px", res=300, pointsize=10)
+tiff(file="Correlation Plot.tiff", width=2175, height= 2000, units="px", res=300, pointsize=10)
 grid_arrange_shared_legend(Ucor,Vcor,Dcor,SLAcor, ncol=2)
 dev.off()
 

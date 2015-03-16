@@ -1,5 +1,5 @@
 ###correlating age specific increment series to monthly averages of enviro variables
-
+setwd("~/Desktop/Github Repo/r-work")
 data= read.csv("BC_12_16.csv", header=TRUE)
 
 idx3 <- data$Increment.Number==3 
@@ -173,21 +173,21 @@ SLA6 <- rcor.test(df_MSLA_6, method= "pearson")
 # U winds
 UW3df<- as.data.frame(UW3$cor.mat) 
 corrcof3U<-UW3df[2:18,1] #selecting the first column
-corrcof3U[c(1,2,3,9)] <- "NA" #removing non significant corr coeffs
+corrcof3U[c(1,2,3,9)] <- "" #removing non significant corr coeffs
 
 UW4df<- as.data.frame(UW4$cor.mat)
 corrcof4U<-UW4df[2:18,1] #selecting the first column
-corrcof4U[c(1,4,6,7,9,14,15)] <- "NA" #removing non significant corr coeffs
+corrcof4U[c(1,4,6,7,9,14,15)] <- "" #removing non significant corr coeffs
 
 
 UW5df<- as.data.frame(UW5$cor.mat)
 corrcof5U<-UW5df[2:18,1] #selecting the first column
-corrcof5U[c(4,6,7,9,14,15)] <- "NA" #removing non significant corr coeffs
+corrcof5U[c(4,6,7,9,14,15)] <- "" #removing non significant corr coeffs
 
 
 UW6df <-as.data.frame(UW6$cor.mat)
 corrcof6U<-UW6df[2:18,1]
-corrcof6U[c(1,6,7,9,10,12,13,14,15)] <- "NA" 
+corrcof6U[c(1,6,7,9,10,12,13,14,15)] <- "" 
 
 cormatU<-cbind(corrcof3U, corrcof4U, corrcof5U, corrcof6U)  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
 colnames(cormatU) <- c("3", "4", "5", "6")
@@ -199,13 +199,14 @@ library(reshape)
 cormatU.m <- melt(cormatU)
 cormatU.m$X1<- factor(cormatU.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
 cormatU.m$X2 <- factor(cormatU.m$X2, levels=c("3", "4", "5", "6"))
+cormatU.m$value <- as.numeric(levels(cormatU.m$value))[cormatU.m$value]
 
 
-Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+
+Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+theme_bw()+ #theme_bw seemed to have removed the grey background i think because it changes the background theme to black and white
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+ #only display those lables on x axis
   scale_y_discrete(expand=c(0,0))+  ## expand fills the y aixs completely to the outermost portion of the plot. So it effectively stretches it as tall as it can go
-  scale_fill_gradient2(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="green", high="red", na.value="transparent")+
+  scale_fill_gradient(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red", na.value="transparent")+ #, na.value="transparent")+
   xlab("U winds")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),

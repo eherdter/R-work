@@ -173,21 +173,21 @@ SLA6 <- rcor.test(df_MSLA_6, method= "pearson")
 # U winds
 UW3df<- as.data.frame(UW3$cor.mat) 
 corrcof3U<-UW3df[2:18,1] #selecting the first column
-corrcof3U[c(1,2,3,9)] <- "" #removing non significant corr coeffs
+corrcof3U[c(1,2,3,4,9,14,17)] <- "" #removing non significant corr coeffs  (10 significant corr) at alpha =.01
 
 UW4df<- as.data.frame(UW4$cor.mat)
 corrcof4U<-UW4df[2:18,1] #selecting the first column
-corrcof4U[c(1,4,6,7,9,14,15)] <- "" #removing non significant corr coeffs
+corrcof4U[c(1,4,6,7,9,11,13,14,15)] <- "" #removing non significant corr coeffs (8 significant corr)
 
 
 UW5df<- as.data.frame(UW5$cor.mat)
 corrcof5U<-UW5df[2:18,1] #selecting the first column
-corrcof5U[c(4,6,7,9,14,15)] <- "" #removing non significant corr coeffs
+corrcof5U[c(1,4,6,7,9,14,15)] <- "" #removing non significant corr coeffs (10 sig corr)
 
 
 UW6df <-as.data.frame(UW6$cor.mat)
 corrcof6U<-UW6df[2:18,1]
-corrcof6U[c(1,6,7,9,10,12,13,14,15)] <- "" 
+corrcof6U[c(1,4,6,7,9,10,12,13,14,15,16,17)] <- "" # 5 significant corr
 
 cormatU<-cbind(corrcof3U, corrcof4U, corrcof5U, corrcof6U)  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
 colnames(cormatU) <- c("3", "4", "5", "6")
@@ -219,25 +219,37 @@ Ucor<- ggplot(cormatU.m, aes(X1,X2, fill=value))+theme_bw()+ #theme_bw seemed to
 
 # V Winds
 VW3df<- as.data.frame(VW3$cor.mat) 
+corrcof3V<-UW3df[2:18,1]
+corrcof3V[c(1,3,4,5,6,7,9,10,11,12,13,15,16,17)] <- "" #removing non significant corr coeffs (3 significant corrs)
+
 VW4df<- as.data.frame(VW4$cor.mat)
+corrcof4V<-VW4df[2:18,1]
+corrcof4V[c(4,5,6,8,9,10,12,13,14,15,17)]<- "" # 11 significant corr
+
 VW5df<- as.data.frame(VW5$cor.mat)
+corrcof5V <- VW5df[2:18,1]
+corrcof5V[c(4,5,6,10,12,13,16,17)] <- "" # 9 significant corr
+
 VW6df <-as.data.frame(VW6$cor.mat)
+corrcof6V <- VW6df[2:18,1]
+corrcof6V[c(1,2,3,4,5,6,8,15,16)] <- "" #8 sig corr
 
-
-cormatV<-cbind(VW3df[2:18,1],VW4df[2:18,1],VW5df[2:18,1],VW6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enviro corr
+cormatV<-cbind(corrcof3V, corrcof4V, corrcof5V, corrcof6V)
 colnames(cormatV) <- c("3", "4", "5", "6")
 row.names(cormatV) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
 cormatV.m <- melt(cormatV)
 cormatV.m$X1<- factor(cormatV.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
 cormatV.m$X2 <- factor(cormatV.m$X2, levels=c("3", "4", "5", "6"))
+cormatV.m$value <- as.numeric(levels(cormatV.m$value))[cormatV.m$value]
 
 
-Vcor<-ggplot(cormatV.m, aes(X1,X2, fill=value))+
+
+Vcor<-ggplot(cormatV.m, aes(X1,X2, fill=value))+theme_bw()+
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
-  scale_fill_continuous(name="Correlation\nCoefficients", limits=c(-0.75,0.75), breaks=seq(-0.60,0.60,0.3), low="white", high="red")+
+  scale_fill_gradient(name="Correlation\nCoefficients",limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red", na.value="transparent")+
   xlab("V winds")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
@@ -250,27 +262,39 @@ Vcor<-ggplot(cormatV.m, aes(X1,X2, fill=value))+
 
 
 ## DIS
-Dis3df<- as.data.frame(Dis3$cor.mat) 
+Dis3df<- as.data.frame(Dis3$cor.mat)
+corrcof3D<-Dis3df[2:18,1]
+corrcof3D[c(1,2,7,11,12,13,14,17)] <- "" #removing non significant corr coeffs - 9 sig corr
+
 Dis4df<- as.data.frame(Dis4$cor.mat)
+corrcof4D<-Dis4df[2:18,1]
+corrcof4D[c(1,3,4,5,6,7,9,10,11,12,15,16)]<-"" # 5 sig corr
+
 Dis5df<- as.data.frame(Dis5$cor.mat)
+corrcof5D<-Dis5df[2:18,1]
+corrcof5D[c(1,2,3,4,5,6,8,9,12,15,16,17)] <- "" # 5 sig corr
+
+
 Dis6df <-as.data.frame(Dis6$cor.mat)
+corrcof6D<-Dis6df[2:18,1]
+corrcof6D[c(1,2,3,4,5,6,7,8,12,13,14,15,16,17)] <-"" # 3 sig corr
 
-
-cormatD<-cbind(Dis3df[2:18,1],Dis4df[2:18,1],Dis5df[2:18,1],Dis6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enDisiro corr
+cormatD<-cbind(corrcof3D, corrcof4D, corrcof5D, corrcof6D)  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enDisiro corr
 colnames(cormatD) <- c("3", "4", "5", "6")
 row.names(cormatD) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
 cormatD.m <- melt(cormatD)
 cormatD.m$X1<- factor(cormatD.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
 cormatD.m$X2 <- factor(cormatD.m$X2, levels=c("3", "4", "5", "6"))
+cormatD.m$value <- as.numeric(levels(cormatD.m$value))[cormatD.m$value]
 
 
-Dcor<-ggplot(cormatD.m, aes(X1,X2, fill=value))+
+
+Dcor<-ggplot(cormatD.m, aes(X1,X2, fill=value))+theme_bw()+
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
-  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
-  xlab("River Discharge")+
+  scale_fill_gradient(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red", na.value="transparent")+  xlab("River Discharge")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
         axis.title.x = element_text(family="Times New Roman", colour="black", size=18),
@@ -284,25 +308,36 @@ Dcor<-ggplot(cormatD.m, aes(X1,X2, fill=value))+
 
 ## SLA
 SLA3df<- as.data.frame(SLA3$cor.mat) 
+corrcofSLA3<-SLA3df[2:18,1]
+corrcofSLA3[c(1,2,4,5,7,8,11,13,14,15,16,17)] <- "" # 5 sig corr
+
 SLA4df<- as.data.frame(SLA4$cor.mat)
+corrcofSLA4<-SLA4df[2:18,1]
+corrcofSLA4[c(1,2,3,5,6,8,9,10,15,16,17)]<-"" # 6 sig corr
+
 SLA5df<- as.data.frame(SLA5$cor.mat)
+corrcofSLA5<-SLA5df[2:18,1]
+corrcofSLA5[c(1,2,3,5,6,7,8,9,10,12,13,14,16,17)]<-"" #3 sig corr
+
 SLA6df <-as.data.frame(SLA6$cor.mat)
+corrcofSLA6<-SLA6df[2:18,1]
+corrcofSLA6[c(1,2,3,4,5,6,7,8,9,10,11,12,13,14)] <-"" # 3 sig corr
 
 
-cormatSLA<-cbind(SLA3df[2:18,1],SLA4df[2:18,1],SLA5df[2:18,1],SLA6df[2:18,1])  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enSLAiro corr
+cormatSLA<-cbind(corrcofSLA3,corrcofSLA4,corrcofSLA5,corrcofSLA6)  #combined correlation coefficients for U Winds for 3-6 increments and select only rows with enSLAiro corr
 colnames(cormatSLA) <- c("3", "4", "5", "6")
 row.names(cormatSLA) <-c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May")
 
 cormatSLA.m <- melt(cormatSLA)
 cormatSLA.m$X1<- factor(cormatSLA.m$X1, levels=c("PJan", "PFeb", "PMar", "PApr", "PMay", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"))
 cormatSLA.m$X2 <- factor(cormatSLA.m$X2, levels=c("3", "4", "5", "6"))
+cormatSLA.m$value <- as.numeric(levels(cormatSLA.m$value))[cormatSLA.m$value]
 
-
-SLAcor<- ggplot(cormatSLA.m, aes(X1,X2, fill=value))+
+SLAcor<- ggplot(cormatSLA.m, aes(X1,X2, fill=value))+theme_bw()+
   geom_tile()+
   scale_x_discrete(expand=c(0,0), breaks=c("PJan", "PMar", "PMay", "Jul", "Sep", "Nov", "Jan", "Mar", "May"))+
   scale_y_discrete(expand=c(0,0))+
-  scale_fill_continuous(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red")+
+  scale_fill_gradient(limits=c(-0.75,0.75), breaks=seq(-0.75,0.75,0.25), low="white", high="red", na.value="transparent")+  xlab("River Discharge")+
   xlab("SLA")+
   theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank(), 
         axis.title.y = element_blank(),
@@ -319,7 +354,7 @@ library(gridExtra)
 
 grid_arrange_shared_legend <- function(...) {
   plots <- list(...)
-  g <- ggplotGrob(plots[[2]] + theme(legend.position="top", legend.text=element_text(size=14,angle=60), legend.title=element_text(size=16, hjust=-3)))$grobs
+  g <- ggplotGrob(plots[[2]] + theme(legend.position="top", legend.text=element_text(size=14,angle=60), legend.title=element_text(size=16)))$grobs
   legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
   lheight <- sum(legend$height)
   grid.arrange(
@@ -338,4 +373,11 @@ tiff(file="Correlation Plot.tiff", width=2175, height= 2000, units="px", res=300
 grid_arrange_shared_legend(Ucor,Vcor,Dcor,SLAcor, ncol=2)
 dev.off()
 
+# Number of significant correlatons
 
+NumSigCorr <- 10+8+10+5+3+11+9+8+9+5+5+3+5+6+3+3
+PercentSig <- (NumSigCorr/ (4*(4*17)))*100
+
+max <-max(corrcof6D)# this is the greatest corr coeficient squared to determine variance explained
+maxn<- as.numeric(max)
+maxn**2

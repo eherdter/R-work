@@ -1,4 +1,4 @@
-setwd("~/Desktop/R_workspace")
+setwd("~/Desktop/Github Repo/r-work")
 mydata= read.csv('BC_12_16.csv',header=TRUE)
 
 ## I want to plot normalized age specific increment widths over the years along with normalized enviro variables that had the highest correlations. So, according to the file Age specific correlation to enviro variables and then an excel file that has all of the correlations compiled
@@ -80,7 +80,7 @@ augUcomplete <- cbind(name, augUcombined2, norm)
 OctDcombined<- rbind(data_3, data_5)   ##### ----- OCTOBER Dis for 5 and 6
 OctDcombined2 <- ddply(OctDcombined, c( "Year.of.Increment.Formation"), summarise, Average=mean(october.dis))
 norm <- scale(OctDcombined2$Average)
-name <- rep("Oct. RD", 7)
+name <- rep("Oct. D", 7)
 OctDcomplete <- cbind(name, OctDcombined2, norm)
 
 
@@ -126,51 +126,52 @@ dev.off()
 
 
 
-inc <- ggplot() + geom_line(data=NormInc, aes(x=Year.of.Increment.Formation, y=norm,  group=Increment.Number, linetype= Increment.Number), size=1)+     									
+inc <- ggplot() + geom_line(data=NormInc, aes(x=Year.of.Increment.Formation, y=norm,  group=Increment.Number, linetype= Increment.Number))+     									
   #geom_errorbar(aes(ymin=Increment.Width-se, ymax=Increment.Width+se), width=.15)+ # position=pd)+ # no standard error present for  normalized mean values
   #scale_linetype_manual(values=c(6,3,4,5))+
   #scale_colour_discrete(name="Increment\nNumber")+
   #geom_point(size=3)+  # changing postion and size of points
   #labs(color="Increment Number")+  #changing name of legend
   ylab("Normalized Index")+
-  xlab("Year")+
   scale_colour_discrete(name="Increment.Number", breaks=c("3", "4", "5", "6"), labels =c("3", "4", "5", "6"))+#http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/#modifying-the-appearance-of-the-legend-title-and-labels, bumps the name to two lines
   scale_x_continuous(limits=c(2006, 2013), breaks=seq(2006, 2012,1))+
-  #scale_y_continuous(limits=c(.05,.35), breaks=seq(.05,.35,.05))+#changing the legend names
+  scale_y_continuous(limits=c(-2,2), breaks=seq(-1,2,1))+#changing the legend names
   theme(panel.grid.minor=element_blank(),panel.grid.major=element_blank(), 
         panel.background=element_rect(colour="black", fill="white"),
         legend.key=element_blank(), 
-        axis.title.x =element_text(family= "Times New Roman", colour="black", size=24),
-        axis.text.x = element_text(family= "Times New Roman", colour="black", size=24),
-        axis.title.y =element_text(family= "Times New Roman", colour="black", size=24),
-        axis.text.y = element_text(family= "Times New Roman", colour="black", size=24),
+        axis.title.x =element_blank(),
+        axis.text.x = element_blank(),
+        axis.title.y =element_blank(),
+        axis.text.y = element_text(family= "Times New Roman", colour="black", size=16),
         legend.title = element_blank(),
-        legend.text = element_text(family= "Times New Roman", size=20),
+        legend.text = element_text(family= "Times New Roman", size=14),
         #legend.background=element_rect(fill='white', colour = 'black'),
-        legend.position= c(.9,.7))
+        legend.position= c(.9,.7),
+        plot.margin=unit(c(2,2,10,2), "mm"))
 #axis.text.x=element_text(colour="black"), #changing  colour of x axis
 #axis.text.y=element_text(colour="black"), #changing colour of y acis
 #plot.title=element_text(size=14)) # changing size of plot title)+)+
 #ggtitle("Mean Otolith Increment With by Years")
 
 
-enviro <- ggplot() + geom_line(data=EnviroFinal, aes(x= Year.of.Increment.Formation, y= norm, group=name, linetype= name), size=1) + 
-   ylab("Normalized Index")+
+enviro <- ggplot() + geom_line(data=EnviroFinal, aes(x= Year.of.Increment.Formation, y= norm, group=name, linetype= name)) + 
   xlab("Year")+
   scale_colour_discrete(name="name")+#http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/#modifying-the-appearance-of-the-legend-title-and-labels, bumps the name to two lines
   scale_x_continuous(limits=c(2006, 2013), breaks=seq(2006, 2012,1))+
-  #scale_y_continuous(limits=c(.05,.35), breaks=seq(.05,.35,.05))+#changing the legend names
+  scale_y_continuous(limits=c(-2,2.7), breaks=seq(-1,2,1))+
   theme(panel.grid.minor=element_blank(),panel.grid.major=element_blank(), 
         panel.background=element_rect(colour="black", fill="white"),
         legend.key=element_blank(), 
-        axis.title.x =element_text(family= "Times New Roman", colour="black", size=24),
-        axis.text.x = element_text(family= "Times New Roman", colour="black", size=24),
-        axis.title.y =element_text(family= "Times New Roman", colour="black", size=24),
-        axis.text.y = element_text(family= "Times New Roman", colour="black", size=24),
+        axis.title.x =element_text(family= "Times New Roman", colour="black", size=18),
+        axis.text.x = element_text(family= "Times New Roman", colour="black", size=16, angle=45, vjust=.5),
+        axis.title.y =element_blank(),
+        axis.text.y = element_text(family= "Times New Roman", colour="black", size=16),
         legend.title = element_blank(),
-        legend.text = element_text(family= "Times New Roman", size=20),
+        legend.text = element_text(family= "Times New Roman", size=14),
         #legend.background=element_rect(fill='white', colour = 'black'),
-        legend.position= c(.85,.77))
+        legend.position= c(.83,.80),
+        plot.margin=unit(c(-7,2,3,2), "mm"))
+    
 #axis.text.x=element_text(colour="black"), #changing  colour of x axis
 #axis.text.y=element_text(colour="black"), #changing colour of y acis
 #plot.title=element_text(size=14)) # changing size of plot title)+)+
@@ -180,8 +181,8 @@ enviro <- ggplot() + geom_line(data=EnviroFinal, aes(x= Year.of.Increment.Format
 ## PLotting the INC and ENVIRO on TOP of eachother,
 # for some reason, when you use grid.arrange you need to specify point size in the tiff() unlike when you just do normal tiff(). In that 
 # case you dont specify point size and just depend upon the size within the size() in the theme()
-tiff(file="Multiplot_Inc_Enviro.tiff", width=2175, height= 2898, units="px", res=300, pointsize=20)
-grid.arrange(inc,enviro, ncol=1)
+tiff(file="Multiplot_Inc_Enviro.tiff", width=1050, height= 1449, units="px", res=300, pointsize=10)
+grid.arrange(arrangeGrob(inc,enviro, ncol=1, left=textGrob("Normalized Indices", rot= 90,vjust=1, gp=gpar(fontfamily="Times New Roman", cex=1.8))))
      dev.off()
 
 
